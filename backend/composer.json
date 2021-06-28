@@ -1,7 +1,19 @@
 {
-    "require": {
-        "slim/slim": "4.*",
-        "slim/psr7": "^1.4",
-        "illuminate/database": "~5.1"
+  "name": "flash-cards/backend",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Sacha Thommet"
     }
+  ],
+  "require": {
+    "slim/slim": "4.*",
+    "slim/psr7": "^1.4",
+    "illuminate/database": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "flashcards\\": "src/"
+    }
+  }
 }
