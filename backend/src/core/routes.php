@@ -1,6 +1,5 @@
 <?php
 
-use flashcards\exceptions\DatabaseException;
 use flashcards\models\Answer;
 use flashcards\models\Card;
 use flashcards\models\Question;
@@ -19,14 +18,14 @@ return function (App $app): void {
         $group->get('list', function (Request $request, Response $response) {
             $cards = Card::all()->toJson();
 
-            return sendResponse($response, $cards);
+            return sendOK($response, $cards);
         });
 
         $group->get('list/{theme_id}', function (Request $request, Response $response, array $args) {
             $themeId = $args['theme_id'];
             $cards = Theme::find($themeId)->cards;
 
-            return sendResponse($response, $cards);
+            return sendOK($response, $cards);
         });
 
         $group->post('create', function (Request $request, Response $response) {
@@ -40,25 +39,23 @@ return function (App $app): void {
                 Question::create($_POST[QUESTION_TEXT], $questionImageFileName);
                 Answer::create($_POST[ANSWER_TEXT], $answerImageFileName);
 
-                $response->getBody()->write(TRUE_RESULT);
-            } catch (DatabaseException $e) {
-                $response->getBody()->write('{"success": false, "reason": "' . $e->getMessage() . '"}');
+                return sendOK($response);
+            } catch (Exception $e) {
+                return sendException($response, $e);
             }
-
-            return $response;
         });
 
         $group->post('{card_id}', function (Request $request, Response $response, array $args) {
             $cardId = $args['card_id'];
 
-            return sendResponse($response, TRUE_RESULT);
+            return sendOK($response);
         });
 
         $group->delete('{card_id}', function (Request $request, Response $response, array $args) {
             $cardId = $args['card_id'];
             $isDestroyed = Card::destroy($cardId) == 1;
 
-            return sendResponse($response, $isDestroyed ? TRUE_RESULT : FALSE_RESULT);
+            return $isDestroyed ? sendOK($response) : sendError($response, errorJson('No matching card'));
         });
     });
 
@@ -67,7 +64,7 @@ return function (App $app): void {
         $group->get('list', function (Request $request, Response $response) {
             $themes = Theme::all()->toJson();
 
-            return sendResponse($response, $themes);
+            return sendOK($response, $themes);
         });
 
         $group->post('create', function (Request $request, Response $response) {
@@ -78,18 +75,45 @@ return function (App $app): void {
             try {
                 Theme::create($_POST[THEME_NAME], $themeImageFileName);
 
-                $response->getBody()->write(TRUE_RESULT);
-            } catch (DatabaseException $e) {
-                $response->getBody()->write('{"success": false, "reason": "' . $e->getMessage() . '"}');
+                return sendOK($response);
+            } catch (Exception $e) {
+                return sendException($response, $e);
             }
+        });
 
-            return $response;
+        $group->post('{theme_id}', function (Request $request, Response $response, array $args) {
+            try {
+                Theme::modify($args['theme_id'], $_POST[THEME_NAME], $_POST[THEME_IMAGE]);
+
+                return sendOK($response);
+            } catch (Exception $e) {
+                return sendException($response, $e);
+            }
+        });
+
+        $group->delete('{theme_id}', function (Request $request, Response $response, array $args) {
+            $themeId = $args['theme_id'];
+            $isDestroyed = Theme::destroy($themeId) == 1;
+
+            return $isDestroyed ? sendOK($response) : sendError($response, errorJson('No matching theme'));
         });
     });
 };
 
-function sendResponse(Response $response, string $body): Response
+function sendOK(Response $response, string $body = TRUE_RESULT): Response
 {
     $response->getBody()->write($body);
-    return $response;
+    return $response->withStatus(200);
+}
+
+function sendError(Response $response, string $body = FALSE_RESULT): Response
+{
+    $response->getBody()->write($body);
+    return $response->withStatus(400);
+}
+
+function sendException(Response $response, Exception $exception): Response
+{
+    $response->getBody()->write(errorJson($exception->getMessage()));
+    return $response->withStatus(400);
 }

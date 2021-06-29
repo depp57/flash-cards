@@ -2,6 +2,7 @@
 
 namespace flashcards\models;
 
+use Exception;
 use flashcards\exceptions\DatabaseException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,7 @@ class Answer extends Model
     public $timestamps = false;
 
     /**
-     * @throws DatabaseException
+     * @throws Exception
      */
     public static function create(?string $text, ?string $imagePath): Answer
     {

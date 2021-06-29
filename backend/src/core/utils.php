@@ -1,14 +1,15 @@
 <?php
 
+use flashcards\exceptions\DatabaseException;
 use Psr\Http\Message\UploadedFileInterface;
 
 define('UPLOADED_FILES_DIR', pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . 'uploaded_files' . DIRECTORY_SEPARATOR);
+define("FILE_TOO_BIG", errorJson('FILE_EXCEED_500_Ko'));
 
 const MAX_CARD_SCORE = 6;
 
 const TRUE_RESULT = '{"success": true}';
 const FALSE_RESULT = '{"success": false}';
-const FILE_TOO_BIG = '{"success": false, "reason": "FILE_EXCEED_1MB"}';
 
 const ANSWER_TEXT = 'answer_text';
 const ANSWER_IMAGE = 'answer_image';
@@ -60,6 +61,9 @@ function ensureAllSet(mixed ...$variables): void
     }
 }
 
+/**
+ * @throws Exception
+ */
 function ensureAnySet(mixed ...$variables): void
 {
     foreach ($variables as $var) {
@@ -68,7 +72,7 @@ function ensureAnySet(mixed ...$variables): void
         }
     }
 
-    badRequestError();
+    throw new Exception('At least one parameters must be declared');
 }
 
 function internalError(string $error = FALSE_RESULT): void
@@ -83,4 +87,9 @@ function badRequestError(string $error = FALSE_RESULT): void
     header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
     if (isset($error)) echo $error;
     exit(1);
+}
+
+function errorJson(string $cause): string
+{
+    return '{"success": false, "cause": "' . $cause . '"}';
 }

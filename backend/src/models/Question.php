@@ -2,6 +2,7 @@
 
 namespace flashcards\models;
 
+use Exception;
 use flashcards\exceptions\DatabaseException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -22,6 +23,9 @@ class Question extends Model
         return $this->hasOne(Answer::class);
     }
 
+    /**
+     * @throws Exception
+     */
     public static function create(?string $text, ?string $imagePath): Question
     {
         ensureAnySet($text, $imagePath);
