@@ -1,56 +1,70 @@
 <?php
 
-use flashcards\models as Models;
+use flashcards\exceptions\DatabaseException;
+use flashcards\models\Answer;
+use flashcards\models\Card;
+use flashcards\models\Question;
+use flashcards\models\Theme;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
+use Slim\Routing\RouteCollectorProxy;
+
+include 'utils.php';
 
 return function (App $app): void {
 
-    $app->get('/cards/create', function (Request $request, Response $response) {
-        $answer = new Models\Answer();
-        $answer->text = generateRandomString();
-        $answer->save();
+    $app->group('/cards/', function (RouteCollectorProxy $group) {
 
-        $question = new Models\Question();
-        $question->text = generateRandomString();
-        $question->save();
+        $group->get('list', function (Request $request, Response $response) {
+            $cards = Card::all()->toJson();
 
-        $card = new Models\Card();
-        $card->score = random_int(0, 6);
-        $card->theme = random_int(1, 2);
-        $card->save();
+            return sendResponse($response, $cards);
+        });
 
-        $response->getBody()->write($card->toJson());
+        $group->get('list/{theme_id}', function (Request $request, Response $response, array $args) {
+            $themeId = $args['theme_id'];
 
-        return $response;
-    });
+            $cards = Theme::find($themeId)->cards;
 
-    $app->get('/cards/list', function (Request $request, Response $response) {
-        $cards = Models\Card::all()->toJson();
-        $response->getBody()->write($cards);
+            return sendResponse($response, $cards);
+        });
 
-        return $response;
-    });
+        $group->post('create', function (Request $request, Response $response) {
+            $uploadedFiles = $request->getUploadedFiles();
 
-    $app->get('/cards/list/{theme}', function (Request $request, Response $response, array $args) {
-        $themeId = $args['theme'];
+            $answerImageFileName = saveImageIfExists($uploadedFiles, ANSWER_IMAGE);
+            $questionImageFileName = saveImageIfExists($uploadedFiles, QUESTION_IMAGE);
 
-        $cards = Models\Theme::with('cards')->get();
-//        ->question; // WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            try {
+                Answer::create($_POST[ANSWER_TEXT], $answerImageFileName);
+                Question::create($_POST[QUESTION_TEXT], $questionImageFileName);
+                Card::create(MAX_CARD_SCORE, intval($_POST[CARD_THEME]));
 
-//        ->get()
-//        ->toJson();
-        $response->getBody()->write($cards);
+                $response->getBody()->write(TRUE_RESULT);
+            } catch (DatabaseException $e) {
+                $response->getBody()->write('{"success": false, "reason": "' . $e->getMessage() . '"}');
+            }
 
-        return $response;
-    });
+            return $response;
+        });
 
+        $group->post('modify/{card_id}', function (Request $request, Response $response, array $args) {
+            $cardId = $args['card_id'];
 
-    $app->get('/', function (Request $request, Response $response, array $args) {
-        $string = Models\Theme::all()->toJson();
-        $response->getBody()->write($string);
+        });
 
-        return $response;
+        $group->delete('delete/{card_id}', function (Request $request, Response $response, array $args) {
+            $cardId = $args['card_id'];
+
+            $isDestroyed = Card::destroy($cardId) == 1;
+
+            return sendResponse($response, $isDestroyed ? TRUE_RESULT : FALSE_RESULT);
+        });
     });
 };
+
+function sendResponse(Response $response, string $body): Response {
+    $response->getBody()->write($body);
+    return $response;
+}
