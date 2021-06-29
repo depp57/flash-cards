@@ -8,6 +8,9 @@ return function (App $app): void {
 
     $app->add(function (Request $request, RequestHandlerInterface $handler) {
         $response = $handler->handle($request);
-        return $response->withAddedHeader('Content-Type', 'application/json');
+        $response = $response->withAddedHeader('Content-Type', 'application/json');
+        $response = $response->withAddedHeader('Access-Control-Allow-Methods', '*');
+
+        return $response;
     });
 };

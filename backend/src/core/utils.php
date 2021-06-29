@@ -16,6 +16,8 @@ const QUESTION_TEXT = 'question_text';
 const QUESTION_IMAGE = 'question_image';
 const CARD_SCORE = 'card_score';
 const CARD_THEME = 'card_theme';
+const THEME_NAME = 'theme_name';
+const THEME_IMAGE = 'theme_image';
 
 // https://www.slimframework.com/docs/v4/cookbook/uploading-files.html
 function saveFile(UploadedFileInterface $file): string
