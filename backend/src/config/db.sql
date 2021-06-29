@@ -2,7 +2,7 @@
 -- version OVH
 -- https://www.phpmyadmin.net/
 --
--- Hôte : ***REMOVED***.mysql.db
+-- Hôte : sachathotodepp.mysql.db
 -- Généré le : ven. 25 juin 2021 à 15:19
 -- Version du serveur :  5.6.50-log
 -- Version de PHP : 7.2.34
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : ***REMOVED***
+-- Base de données : sachathotodepp
 --
 
 CREATE TABLE progression
