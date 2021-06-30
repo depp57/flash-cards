@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Question extends Model
 {
     protected $table = 'question';
+    protected $hidden = ['id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -20,7 +21,7 @@ class Question extends Model
 
     public function answer(): HasOne
     {
-        return $this->hasOne(Answer::class);
+        return $this->hasOne(Answer::class, 'id');
     }
 
     /**

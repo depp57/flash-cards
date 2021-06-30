@@ -45,8 +45,9 @@ CREATE TABLE card
 (
     id    int(4) NOT NULL AUTO_INCREMENT,
     score int(1) NOT NULL,
-    theme int(4) NOT NULL,
-    PRIMARY KEY (id)
+    theme_id int(4) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT FOREIGN KEY (theme_id) REFERENCES theme (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;

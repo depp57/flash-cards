@@ -21,7 +21,7 @@ class Card extends Model
 
     public function question(): HasOne
     {
-        return $this->hasOne(Question::class);
+        return $this->hasOne(Question::class, 'id');
     }
 
     public function theme(): BelongsTo
@@ -41,7 +41,7 @@ class Card extends Model
         $card = new Card();
 
         $card->score = $score;
-        $card->theme = $themeId;
+        $card->theme_id = $themeId;
 
         if (!$card->save()) {
             throw new DatabaseException('Unable to save Card');
@@ -61,7 +61,7 @@ class Card extends Model
         if ($card == null) throw new DatabaseException('No matching Card');
 
         if (isset($score)) $card->score = $score;
-        if (isset($themeId)) $card->theme = $themeId;
+        if (isset($themeId)) $card->theme_id = $themeId;
 
         if (!$card->save()) throw new DatabaseException('Unable to modify Card');
 

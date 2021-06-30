@@ -16,14 +16,20 @@ return function (App $app): void {
     $app->group('/cards', function (RouteCollectorProxy $group) {
 
         $group->get('', function (Request $request, Response $response) {
-            $cards = Card::all()->toJson();
+            $cards = Card::with([
+                'question',
+                'question.answer'
+            ])->get()->toJson();
 
             return sendOK($response, $cards);
         });
 
         $group->get('/{theme_id}', function (Request $request, Response $response, array $args) {
             $themeId = $args['theme_id'];
-            $cards = Theme::find($themeId)->cards;
+            $cards = Theme::find($themeId)->cards()->with([
+                'question',
+                'question.answer'
+            ])->get()->toJson();
 
             return sendOK($response, $cards);
         });

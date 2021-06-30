@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     protected $table = 'answer';
+    protected $hidden = ['id'];
 
     /**
      * Indicates if the model should be timestamped.

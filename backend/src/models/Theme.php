@@ -20,7 +20,7 @@ class Theme extends Model
 
     public function cards(): HasMany
     {
-        return $this->hasMany(Card::class, 'theme');
+        return $this->hasMany(Card::class);
     }
 
     /**
