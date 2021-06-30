@@ -18,6 +18,7 @@ $app->addErrorMiddleware(true, true, false);
 
 $middleware = require __DIR__ . '/src/core/middleware.php';
 $middleware($app);
+$app->addBodyParsingMiddleware();
 
 $routes = require __DIR__ . '/src/core/routes.php';
 $routes($app);

@@ -13,31 +13,32 @@ include 'utils.php';
 
 return function (App $app): void {
 
-    $app->group('/card/', function (RouteCollectorProxy $group) {
+    $app->group('/cards', function (RouteCollectorProxy $group) {
 
-        $group->get('list', function (Request $request, Response $response) {
+        $group->get('', function (Request $request, Response $response) {
             $cards = Card::all()->toJson();
 
             return sendOK($response, $cards);
         });
 
-        $group->get('list/{theme_id}', function (Request $request, Response $response, array $args) {
+        $group->get('/{theme_id}', function (Request $request, Response $response, array $args) {
             $themeId = $args['theme_id'];
             $cards = Theme::find($themeId)->cards;
 
             return sendOK($response, $cards);
         });
 
-        $group->post('create', function (Request $request, Response $response) {
+        $group->post('', function (Request $request, Response $response) {
             $uploadedFiles = $request->getUploadedFiles();
+            $jsonBody = $request->getParsedBody();
 
             $answerImageFileName = saveImageIfExists($uploadedFiles, ANSWER_IMAGE);
             $questionImageFileName = saveImageIfExists($uploadedFiles, QUESTION_IMAGE);
 
             try {
-                Card::create(MAX_CARD_SCORE, intval($_POST[CARD_THEME]));
-                Question::create($_POST[QUESTION_TEXT], $questionImageFileName);
-                Answer::create($_POST[ANSWER_TEXT], $answerImageFileName);
+                Card::create(MAX_CARD_SCORE, intval($jsonBody[CARD_THEME]));
+                Question::create($jsonBody[QUESTION_TEXT], $questionImageFileName);
+                Answer::create($jsonBody[ANSWER_TEXT], $answerImageFileName);
 
                 return sendOK($response);
             } catch (Exception $e) {
@@ -45,25 +46,26 @@ return function (App $app): void {
             }
         });
 
-        $group->post('{card_id}', function (Request $request, Response $response, array $args) {
+        $group->post('/{card_id}', function (Request $request, Response $response, array $args) {
             $cardId = $args['card_id'];
             $uploadedFiles = $request->getUploadedFiles();
+            $jsonBody = $request->getParsedBody();
 
             try {
                 $hasChanged = false;
 
-                if (isset($_POST[CARD_SCORE]) || isset($_POST[CARD_THEME])) {
-                    Card::modify($cardId, $_POST[CARD_SCORE], $_POST[CARD_THEME]);
+                if (isset($jsonBody[CARD_SCORE]) || isset($jsonBody[CARD_THEME])) {
+                    Card::modify($cardId, $jsonBody[CARD_SCORE], $jsonBody[CARD_THEME]);
                     $hasChanged = true;
                 }
-                if (isset($_POST[QUESTION_TEXT]) || isset($_POST[QUESTION_IMAGE])) {
+                if (isset($jsonBody[QUESTION_TEXT]) || isset($jsonBody[QUESTION_IMAGE])) {
                     $questionImageFileName = saveImageIfExists($uploadedFiles, QUESTION_IMAGE);
-                    Question::modify($cardId, $_POST[QUESTION_TEXT], $questionImageFileName);
+                    Question::modify($cardId, $jsonBody[QUESTION_TEXT], $questionImageFileName);
                     $hasChanged = true;
                 }
-                if (isset($_POST[ANSWER_TEXT]) || isset($_POST[ANSWER_IMAGE])) {
+                if (isset($jsonBody[ANSWER_TEXT]) || isset($jsonBody[ANSWER_IMAGE])) {
                     $answerImageFileName = saveImageIfExists($uploadedFiles, ANSWER_IMAGE);
-                    Answer::modify($cardId, $_POST[ANSWER_TEXT], $answerImageFileName);
+                    Answer::modify($cardId, $jsonBody[ANSWER_TEXT], $answerImageFileName);
                     $hasChanged = true;
                 }
 
@@ -73,7 +75,7 @@ return function (App $app): void {
             }
         });
 
-        $group->delete('{card_id}', function (Request $request, Response $response, array $args) {
+        $group->delete('/{card_id}', function (Request $request, Response $response, array $args) {
             $cardId = $args['card_id'];
             $isDestroyed = Card::destroy($cardId) == 1;
 
@@ -81,21 +83,22 @@ return function (App $app): void {
         });
     });
 
-    $app->group('/theme/', function (RouteCollectorProxy $group) {
+    $app->group('/themes', function (RouteCollectorProxy $group) {
 
-        $group->get('list', function (Request $request, Response $response) {
+        $group->get('', function (Request $request, Response $response) {
             $themes = Theme::all()->toJson();
 
             return sendOK($response, $themes);
         });
 
-        $group->post('create', function (Request $request, Response $response) {
+        $group->post('', function (Request $request, Response $response) {
             $uploadedFiles = $request->getUploadedFiles();
+            $jsonBody = $request->getParsedBody();
 
             $themeImageFileName = saveImageIfExists($uploadedFiles, THEME_IMAGE);
 
             try {
-                Theme::create($_POST[THEME_NAME], $themeImageFileName);
+                Theme::create($jsonBody[THEME_NAME], $themeImageFileName);
 
                 return sendOK($response);
             } catch (Exception $e) {
@@ -103,12 +106,13 @@ return function (App $app): void {
             }
         });
 
-        $group->post('{theme_id}', function (Request $request, Response $response, array $args) {
+        $group->post('/{theme_id}', function (Request $request, Response $response, array $args) {
             try {
                 $uploadedFiles = $request->getUploadedFiles();
+                $jsonBody = $request->getParsedBody();
                 $themeImageFileName = saveImageIfExists($uploadedFiles, THEME_IMAGE);
 
-                Theme::modify($args['theme_id'], $_POST[THEME_NAME], $themeImageFileName);
+                Theme::modify($args['theme_id'], $jsonBody[THEME_NAME], $themeImageFileName);
 
                 return sendOK($response);
             } catch (Exception $e) {
@@ -116,7 +120,7 @@ return function (App $app): void {
             }
         });
 
-        $group->delete('{theme_id}', function (Request $request, Response $response, array $args) {
+        $group->delete('/{theme_id}', function (Request $request, Response $response, array $args) {
             $themeId = $args['theme_id'];
             $isDestroyed = Theme::destroy($themeId) == 1;
 

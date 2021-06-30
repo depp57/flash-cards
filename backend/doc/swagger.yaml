@@ -1,0 +1,289 @@
+openapi: 3.0.0
+info:
+  title: 'Flash-Cards API'
+  version: '1.0'
+servers:
+  - url: 'https://flash-cards.sachathommet.fr/api'
+paths:
+  /cards:
+
+    get:
+      responses:
+        '200':
+          description: 'List all cards'
+
+    post:
+      requestBody:
+        description: 'Card data'
+        content:
+          application/json:
+            schema:
+              required:
+                - card_theme
+              properties:
+                card_theme:
+                  description: 'Theme of the card'
+                  type: integer
+                question_text:
+                  description: 'Text of the question'
+                  type: string
+                question_image:
+                  description: 'Image of the question'
+                  type: string
+                  format: binary
+                answer_text:
+                  description: 'Text of the answer'
+                  type: string
+                answer_image:
+                  description: 'Image of the answer'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '200':
+          description: 'Card created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                example:
+                  success: true
+        '400':
+          description: 'Card not created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                  cause: { description: 'why the request failed', type: string }
+                example:
+                  success: false
+                  cause: wrong id
+
+  '/cards/{theme_id}':
+
+    get:
+      parameters:
+        - name: theme_id
+          in: path
+          description: 'ID of the theme'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'List all cards of a given theme'
+
+
+  '/cards/{card_id}':
+
+    post:
+      parameters:
+        - name: card_id
+          in: path
+          description: 'ID of the card'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: 'Card data'
+        content:
+          application/json:
+            schema:
+              required:
+                - card_theme
+              properties:
+                card_theme:
+                  description: 'Theme of the card'
+                  type: integer
+                card_score:
+                  description: 'Score of the card (0-MAX_CARD_SCORE=6)'
+                  type: integer
+                question_text:
+                  description: 'Text of the question'
+                  type: string
+                question_image:
+                  description: 'Image of the question'
+                  type: string
+                  format: binary
+                answer_text:
+                  description: 'Text of the answer'
+                  type: string
+                answer_image:
+                  description: 'Image of the answer'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '200':
+          description: 'Card modified'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                example:
+                  success: true
+        '400':
+          description: 'Card not modified'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                  cause: { description: 'why the request failed', type: string }
+                example:
+                  success: false
+                  cause: wrong id
+
+    delete:
+      parameters:
+        - name: card_id
+          in: path
+          description: 'ID of the card'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Card deleted'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                example:
+                  success: true
+        '400':
+          description: 'Card not deleted'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                  cause: { description: 'why the request failed', type: string }
+                example:
+                  success: false
+                  cause: wrong id
+
+
+  /themes:
+
+    get:
+      responses:
+        '200':
+          description: 'List of all themes'
+
+    post:
+      requestBody:
+        description: 'Theme data'
+        content:
+          application/json:
+            schema:
+              properties:
+                theme_name:
+                  description: 'Name of the theme'
+                  type: string
+                theme_image:
+                  description: 'Image of the theme'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '200':
+          description: 'Theme created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                example:
+                  success: true
+        '400':
+          description: 'Theme not created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                  cause: { description: 'why the request failed', type: string }
+                example:
+                  success: false
+                  cause: wrong id
+
+
+  '/themes/{theme_id}':
+    post:
+      parameters:
+        - name: theme_id
+          in: path
+          description: 'ID of the theme'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: 'Theme data'
+        content:
+          application/json:
+            schema:
+              properties:
+                theme_name:
+                  description: 'Name of the theme'
+                  type: string
+                theme_image:
+                  description: 'Image of the theme'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '200':
+          description: 'Theme modified'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                example:
+                  success: true
+        '400':
+          description: 'Theme not modified'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                  cause: { description: 'why the request failed', type: string }
+                example:
+                  success: false
+                  cause: wrong id
+
+    delete:
+      parameters:
+        - name: theme_id
+          in: path
+          description: 'ID of the theme'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Theme deleted'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                example:
+                  success: true
+        '400':
+          description: 'Theme not deleted'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { description: 'if the request succeeded', type: boolean }
+                  cause: { description: 'why the request failed', type: string }
+                example:
+                  success: false
+                  cause: wrong id
