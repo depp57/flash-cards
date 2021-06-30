@@ -2,6 +2,7 @@
 
 namespace flashcards\models;
 
+use Exception;
 use flashcards\exceptions\DatabaseException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,29 +51,20 @@ class Card extends Model
     }
 
     /**
-     * @throws DatabaseException
+     * @throws Exception
      */
-    public static function modify(int $id, array $changes): Card
+    public static function modify(int $id, int $score = null, int $themeId = null): Card
     {
-        $answerText = $changes[ANSWER_TEXT];
-        $answerImage = $changes[ANSWER_IMAGE];
+        ensureAnySet($score, $themeId);
 
-        $questionText = $changes[QUESTION_TEXT];
-        $questionImage = $changes[QUESTION_IMAGE];
+        $card = Card::find($id);
+        if ($card == null) throw new DatabaseException('No matching Card');
 
-        $cardScore = $changes[CARD_SCORE];
-        $cardTheme = $changes[CARD_THEME];
+        if (isset($score)) $card->score = $score;
+        if (isset($themeId)) $card->theme = $themeId;
 
-        if (isset($changes[ANSWER_TEXT]) || isset($changes[ANSWER_IMAGE])) {
-            $card = Card::find($id);
-            $question = $card->question;
-            $answer = $question->answer;
+        if (!$card->save()) throw new DatabaseException('Unable to modify Card');
 
-        } elseif (isset($changes[QUESTION_TEXT]) || isset($changes[QUESTION_IMAGE])) {
-
-        } elseif (isset($changes[CARD_SCORE]) || isset($changes[CARD_THEME])) {
-
-        }
-
+        return $card;
     }
 }

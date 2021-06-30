@@ -50,8 +50,10 @@ class Theme extends Model
         ensureAnySet($name, $imagePath);
 
         $theme = Theme::find($id);
+        if ($theme == null) throw new DatabaseException('No matching Theme');
+
         if (isset($name)) $theme->name = $name;
-        if (isset($imagePath)) $theme->imagePath = $name;
+        if (isset($imagePath)) $theme->image = $imagePath;
 
         if (!$theme->save()) {
             throw new DatabaseException('Unable to modify Theme');

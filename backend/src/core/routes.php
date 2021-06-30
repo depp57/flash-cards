@@ -47,8 +47,30 @@ return function (App $app): void {
 
         $group->post('{card_id}', function (Request $request, Response $response, array $args) {
             $cardId = $args['card_id'];
+            $uploadedFiles = $request->getUploadedFiles();
 
-            return sendOK($response);
+            try {
+                $hasChanged = false;
+
+                if (isset($_POST[CARD_SCORE]) || isset($_POST[CARD_THEME])) {
+                    Card::modify($cardId, $_POST[CARD_SCORE], $_POST[CARD_THEME]);
+                    $hasChanged = true;
+                }
+                if (isset($_POST[QUESTION_TEXT]) || isset($_POST[QUESTION_IMAGE])) {
+                    $questionImageFileName = saveImageIfExists($uploadedFiles, QUESTION_IMAGE);
+                    Question::modify($cardId, $_POST[QUESTION_TEXT], $questionImageFileName);
+                    $hasChanged = true;
+                }
+                if (isset($_POST[ANSWER_TEXT]) || isset($_POST[ANSWER_IMAGE])) {
+                    $answerImageFileName = saveImageIfExists($uploadedFiles, ANSWER_IMAGE);
+                    Answer::modify($cardId, $_POST[ANSWER_TEXT], $answerImageFileName);
+                    $hasChanged = true;
+                }
+
+                return $hasChanged ? sendOK($response) : sendError($response, errorJson('At least one parameters must be declared'));
+            } catch (Exception $e) {
+                return sendException($response, $e);
+            }
         });
 
         $group->delete('{card_id}', function (Request $request, Response $response, array $args) {
@@ -83,7 +105,10 @@ return function (App $app): void {
 
         $group->post('{theme_id}', function (Request $request, Response $response, array $args) {
             try {
-                Theme::modify($args['theme_id'], $_POST[THEME_NAME], $_POST[THEME_IMAGE]);
+                $uploadedFiles = $request->getUploadedFiles();
+                $themeImageFileName = saveImageIfExists($uploadedFiles, THEME_IMAGE);
+
+                Theme::modify($args['theme_id'], $_POST[THEME_NAME], $themeImageFileName);
 
                 return sendOK($response);
             } catch (Exception $e) {

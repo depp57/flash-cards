@@ -41,4 +41,24 @@ class Question extends Model
 
         return $question;
     }
+
+    /**
+     * @throws Exception
+     */
+    public static function modify(int $id, string $text = null, string $imagePath = null): Question
+    {
+        ensureAnySet($text, $imagePath);
+
+        $question = Question::find($id);
+        if ($question == null) throw new DatabaseException('No matching Question');
+
+        if (isset($text)) $question->text = $text;
+        if (isset($imagePath)) $question->image = $imagePath;
+
+        if (!$question->save()) {
+            throw new DatabaseException('Unable to modify Question');
+        }
+
+        return $question;
+    }
 }
