@@ -1,5 +1,110 @@
+@use '~@angular/material' as mat;
+
+@include mat.core();
+
+$primary: (
+        50 : #e5eaed,
+        100 : #bdcad1,
+        200 : #92a7b3,
+        300 : #668395,
+        400 : #45697e,
+        500 : #244e67,
+        600 : #20475f,
+        700 : #1b3d54,
+        800 : #16354a,
+        900 : #0d2539,
+        A100 : #74b9ff,
+        A200 : #41a0ff,
+        A400 : #0e86ff,
+        A700 : #007af3,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #ffffff,
+                400 : #ffffff,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #ffffff,
+                A700 : #ffffff,
+        )
+);
+
+$secondary: (
+        50 : #f5f9fa,
+        100 : #e6eff4,
+        200 : #d6e5ec,
+        300 : #c6dae4,
+        400 : #b9d2df,
+        500 : #adcad9,
+        600 : #a6c5d5,
+        700 : #9cbdcf,
+        800 : #93b7ca,
+        900 : #83abc0,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #e6f6ff,
+        A700 : #cdedff,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #000000,
+                500 : #000000,
+                600 : #000000,
+                700 : #000000,
+                800 : #000000,
+                900 : #000000,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #000000,
+                A700 : #000000,
+        )
+);
+
+
+$app-primary: mat.define-palette($primary, 500);
+$app-accent: mat.define-palette($secondary, 500);
+
+$app-theme: mat.define-light-theme((
+        color: (
+                primary: $app-primary,
+                accent: $app-accent
+        )
+));
+
+// Emit theme-dependent styles for common features used across multiple components.
+@include mat.core-theme($app-theme);
+
+// Emit styles for MatButton
+@include mat.button-theme($app-theme);
+
+:root {
+  // background colors
+  --background-color: #062435;
+  --navbar-color: #041D2C;
+  --tabbar-color: #072A3E;
+
+  // buttons/text colors
+  --button-color-primary: #244E67;
+  --button-color-secondary: #ADCAD9;
+
+  // icons/text colors
+  --icon-color-success: #11BC8C;
+  --icon-color-warning: #FBC02D;
+  --icon-color-danger: #F61F43;
+  --icon-color-info: #3DCCDE;
+}
+
 html, body {
   height: 100%;
+  background: var(--background-color);
 }
 
 body {
