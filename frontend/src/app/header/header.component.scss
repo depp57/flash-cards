@@ -1,0 +1,16 @@
+.main-container {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  width: 100%;
+  height: 100%;
+  background: var(--navbar-color);
+}
+
+.app-logo {
+  margin: auto;
+}
+
+.title {
+  margin: auto;
+  color: var(--button-color-secondary);
+}

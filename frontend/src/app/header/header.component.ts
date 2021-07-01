@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { HeaderService } from './header.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -6,11 +8,11 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  constructor() { }
+  constructor(private titleService: HeaderService) {}
 
-  ngOnInit(): void {
+  get title(): Observable<string> {
+    return this.titleService.title;
   }
-
 }

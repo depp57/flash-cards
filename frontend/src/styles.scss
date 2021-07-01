@@ -107,7 +107,12 @@ html, body {
   background: var(--background-color);
 }
 
+@font-face {
+  font-family: Nunito;
+  src: url('assets/font/Nunito-Regular.ttf') format('truetype');
+}
+
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: Nunito, serif;
 }
