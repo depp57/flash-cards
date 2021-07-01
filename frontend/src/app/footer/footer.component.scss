@@ -1,0 +1,28 @@
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  background: var(--tabbar-color);
+}
+
+.link {
+  transform: scale(1.5);
+}
+
+.red {
+  color: var(--icon-color-danger)
+}
+
+.yellow {
+  color: var(--icon-color-warning);
+}
+
+.green {
+  color: var(--icon-color-success);
+}
+
+.blue {
+  color: var(--icon-color-info);
+}
