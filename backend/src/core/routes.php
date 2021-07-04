@@ -1,5 +1,6 @@
 <?php
 
+use flashcards\exceptions\FileUploadException;
 use flashcards\models\Answer;
 use flashcards\models\Card;
 use flashcards\models\Question;
@@ -57,16 +58,12 @@ return function (App $app): void {
         });
 
         $group->post('', function (Request $request, Response $response) {
-            $uploadedFiles = $request->getUploadedFiles();
             $jsonBody = $request->getParsedBody();
-
-            $answerImageFileName = saveImageIfExists($uploadedFiles, ANSWER_IMAGE);
-            $questionImageFileName = saveImageIfExists($uploadedFiles, QUESTION_IMAGE);
 
             try {
                 Card::create(MAX_CARD_SCORE, intval($jsonBody[CARD_THEME]));
-                Question::create($jsonBody[QUESTION_TEXT], $questionImageFileName);
-                Answer::create($jsonBody[ANSWER_TEXT], $answerImageFileName);
+                Question::create($jsonBody[QUESTION_TEXT], $jsonBody[QUESTION_IMAGE]);
+                Answer::create($jsonBody[ANSWER_TEXT], $jsonBody[ANSWER_IMAGE]);
 
                 return sendOK($response);
             } catch (Exception $e) {
@@ -76,7 +73,6 @@ return function (App $app): void {
 
         $group->post('/{card_id}', function (Request $request, Response $response, array $args) {
             $cardId = $args['card_id'];
-            $uploadedFiles = $request->getUploadedFiles();
             $jsonBody = $request->getParsedBody();
 
             try {
@@ -87,13 +83,11 @@ return function (App $app): void {
                     $hasChanged = true;
                 }
                 if (isset($jsonBody[QUESTION_TEXT]) || isset($jsonBody[QUESTION_IMAGE])) {
-                    $questionImageFileName = saveImageIfExists($uploadedFiles, QUESTION_IMAGE);
-                    Question::modify($cardId, $jsonBody[QUESTION_TEXT], $questionImageFileName);
+                    Question::modify($cardId, $jsonBody[QUESTION_TEXT], $jsonBody[QUESTION_IMAGE]);
                     $hasChanged = true;
                 }
                 if (isset($jsonBody[ANSWER_TEXT]) || isset($jsonBody[ANSWER_IMAGE])) {
-                    $answerImageFileName = saveImageIfExists($uploadedFiles, ANSWER_IMAGE);
-                    Answer::modify($cardId, $jsonBody[ANSWER_TEXT], $answerImageFileName);
+                    Answer::modify($cardId, $jsonBody[ANSWER_TEXT], $jsonBody[ANSWER_IMAGE]);
                     $hasChanged = true;
                 }
 
@@ -120,13 +114,10 @@ return function (App $app): void {
         });
 
         $group->post('', function (Request $request, Response $response) {
-            $uploadedFiles = $request->getUploadedFiles();
             $jsonBody = $request->getParsedBody();
 
-            $themeImageFileName = saveImageIfExists($uploadedFiles, THEME_IMAGE);
-
             try {
-                Theme::create($jsonBody[THEME_NAME], $themeImageFileName);
+                Theme::create($jsonBody[THEME_NAME], $jsonBody[THEME_IMAGE]);
 
                 return sendOK($response);
             } catch (Exception $e) {
@@ -136,11 +127,9 @@ return function (App $app): void {
 
         $group->post('/{theme_id}', function (Request $request, Response $response, array $args) {
             try {
-                $uploadedFiles = $request->getUploadedFiles();
                 $jsonBody = $request->getParsedBody();
-                $themeImageFileName = saveImageIfExists($uploadedFiles, THEME_IMAGE);
 
-                Theme::modify($args['theme_id'], $jsonBody[THEME_NAME], $themeImageFileName);
+                Theme::modify($args['theme_id'], $jsonBody[THEME_NAME], $jsonBody[THEME_IMAGE]);
 
                 return sendOK($response);
             } catch (Exception $e) {
@@ -154,6 +143,18 @@ return function (App $app): void {
 
             return $isDestroyed ? sendOK($response) : sendError($response, errorJson('No matching theme'));
         });
+    });
+
+    $app->post('/images', function (Request $request, Response $response) {
+        $uploadedFiles = $request->getUploadedFiles();
+
+        try {
+            $imageFileName = saveImageIfExists($uploadedFiles);
+
+            return sendOK($response, json_encode(['success' => true, 'path' => $imageFileName]));
+        } catch (FileUploadException $e) {
+            return sendException($response, $e);
+        }
     });
 };
 

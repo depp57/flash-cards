@@ -17,6 +17,10 @@
     {
       "name": "theme",
       "description": "Everything about themes"
+    },
+    {
+      "name": "image",
+      "description": "Everything about images uploading"
     }
   ],
   "paths": {
@@ -55,18 +59,16 @@
                     "type": "string"
                   },
                   "question_image": {
-                    "description": "Image of the question",
-                    "type": "string",
-                    "format": "binary"
+                    "description": "Image path of the question",
+                    "type": "string"
                   },
                   "answer_text": {
                     "description": "Text of the answer",
                     "type": "string"
                   },
                   "answer_image": {
-                    "description": "Image of the answer",
-                    "type": "string",
-                    "format": "binary"
+                    "description": "Image path of the answer",
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -215,18 +217,16 @@
                     "type": "string"
                   },
                   "question_image": {
-                    "description": "Image of the question",
-                    "type": "string",
-                    "format": "binary"
+                    "description": "Image path of the question",
+                    "type": "string"
                   },
                   "answer_text": {
                     "description": "Text of the answer",
                     "type": "string"
                   },
                   "answer_image": {
-                    "description": "Image of the answer",
-                    "type": "string",
-                    "format": "binary"
+                    "description": "Image path of the answer",
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -367,9 +367,8 @@
                     "type": "string"
                   },
                   "theme_image": {
-                    "description": "Image of the theme",
-                    "type": "string",
-                    "format": "binary"
+                    "description": "Image path of the theme",
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -450,9 +449,8 @@
                     "type": "string"
                   },
                   "theme_image": {
-                    "description": "Image of the theme",
-                    "type": "string",
-                    "format": "binary"
+                    "description": "Image path of the theme",
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -557,6 +555,78 @@
                   "example": {
                     "success": false,
                     "cause": "wrong id"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/images": {
+      "post": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Upload an image, and get its auto-generated path",
+        "requestBody": {
+          "description": "Image data",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "image": {
+                    "description": "Image file",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Image uploaded and saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "description": "if the image is saved",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "description": "the path of the uploaded image",
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "success": true,
+                    "path": "pimcopqwg46b7v.png"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Image not uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "description": "if the request succeeded",
+                      "type": "boolean"
+                    },
+                    "cause": {
+                      "description": "why the request failed",
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "cause": "image too big"
                   }
                 }
               }
