@@ -29,7 +29,12 @@ return function (App $app): void {
             $cards = Theme::find($themeId)->cards()->with([
                 'question',
                 'question.answer'
-            ])->get()->toJson();
+            ])->get();
+
+            // we already have the theme id in the request param
+            $cards->makeHidden(['theme_id']);
+
+            $cards->toJson();
 
             return sendOK($response, $cards);
         });

@@ -10,6 +10,7 @@ return function (App $app): void {
         $response = $handler->handle($request);
         $response = $response->withAddedHeader('Content-Type', 'application/json');
         $response = $response->withAddedHeader('Access-Control-Allow-Methods', '*');
+        $response = $response->withAddedHeader('Access-Control-Allow-Origin', '*');
 
         return $response;
     });
