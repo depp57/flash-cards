@@ -143,6 +143,39 @@
         }
       }
     },
+    "/cards/{theme_id}/{count}": {
+      "get": {
+        "tags": [
+          "card"
+        ],
+        "summary": "List n cards of a given theme, ordered by their score",
+        "parameters": [
+          {
+            "name": "theme_id",
+            "in": "path",
+            "description": "ID of the theme",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "count",
+            "in": "path",
+            "description": "Number of cards to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "N cards of a given theme, ordered by their score"
+          }
+        }
+      }
+    },
     "/cards/{card_id}": {
       "post": {
         "tags": [

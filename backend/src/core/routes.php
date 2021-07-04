@@ -39,6 +39,23 @@ return function (App $app): void {
             return sendOK($response, $cards);
         });
 
+        $group->get('/{theme_id}/{count}', function (Request $request, Response $response, array $args) {
+            $themeId = $args['theme_id'];
+            $count = $args['count'];
+
+            $cards = Theme::find($themeId)->cards()->with([
+                'question',
+                'question.answer'
+            ])->orderBy('score')->take($count)->get();
+
+            // we already have the theme id in the request param
+            $cards->makeHidden(['theme_id']);
+
+            $cards->toJson();
+
+            return sendOK($response, $cards);
+        });
+
         $group->post('', function (Request $request, Response $response) {
             $uploadedFiles = $request->getUploadedFiles();
             $jsonBody = $request->getParsedBody();
