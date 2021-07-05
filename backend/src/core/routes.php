@@ -47,7 +47,7 @@ return function (App $app): void {
             $cards = Theme::find($themeId)->cards()->with([
                 'question',
                 'question.answer'
-            ])->orderBy('score')->take($count)->get();
+            ])->orderBy('score', 'DESC')->take($count)->get();
 
             // we already have the theme id in the request param
             $cards->makeHidden(['theme_id']);

@@ -41,11 +41,38 @@ function saveFile(UploadedFileInterface $file): string
 
         $file->moveTo(UPLOADED_FILES_DIR . $fileName);
 
+        if (preg_match('/(png|jpg|jpeg)/m', $extension)) {
+            resizeImage(UPLOADED_FILES_DIR . $fileName, $extension);
+        }
+
         return $fileName;
-    }
-    catch (Exception) {
+    } catch (Exception) {
         throw new FileUploadException('unknown error while saving the image');
     }
+}
+
+/**
+ * @throws FileUploadException
+ */
+function resizeImage(string $imagePath, string $extension): void
+{
+    echo 'resize image';
+
+    $image = match ($extension) {
+        'png' => imagecreatefrompng($imagePath),
+        'jpg', 'jpeg' => imagecreatefromjpeg($imagePath),
+        default => throw new FileUploadException('the image should be a jpg/jpeg/png file'),
+    };
+
+    $imageResized = imagescale($image, IMAGE_WIDTH, IMAGE_HEIGHT);
+
+    imagealphablending($imageResized, false);
+    imagesavealpha($imageResized, true);
+
+    // compression level from 0 to 9, 9 is the highest compression (smallest files)
+    imagepng($imageResized, $imagePath, 9);
+
+    echo 'resize image successfully';
 }
 
 /**
