@@ -56,8 +56,6 @@ function saveFile(UploadedFileInterface $file): string
  */
 function resizeImage(string $imagePath, string $extension): void
 {
-    echo 'resize image';
-
     $image = match ($extension) {
         'png' => imagecreatefrompng($imagePath),
         'jpg', 'jpeg' => imagecreatefromjpeg($imagePath),
@@ -71,8 +69,6 @@ function resizeImage(string $imagePath, string $extension): void
 
     // compression level from 0 to 9, 9 is the highest compression (smallest files)
     imagepng($imageResized, $imagePath, 9);
-
-    echo 'resize image successfully';
 }
 
 /**
