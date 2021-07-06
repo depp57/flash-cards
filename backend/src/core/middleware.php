@@ -11,6 +11,7 @@ return function (App $app): void {
         $response = $response->withAddedHeader('Content-Type', 'application/json');
         $response = $response->withAddedHeader('Access-Control-Allow-Methods', '*');
         $response = $response->withAddedHeader('Access-Control-Allow-Origin', '*');
+        $response = $response->withAddedHeader('Access-Control-Allow-headers', '*');
 
         return $response;
     });
