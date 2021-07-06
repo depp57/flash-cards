@@ -7,7 +7,7 @@ define('UPLOADED_FILES_DIR', pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRN
 define("FILE_TOO_BIG", errorJson('FILE_EXCEED_500_Ko'));
 
 const MAX_CARD_SCORE = 6;
-const IMAGE_WIDTH = 180;
+const IMAGE_WIDTH = 480;
 const IMAGE_HEIGHT = IMAGE_WIDTH;
 
 const TRUE_RESULT = '{"success": true}';
