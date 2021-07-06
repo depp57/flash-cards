@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpLoadingInterceptor } from './shared/services/http-loading-interceptor.service';
+import { HttpCacheInterceptor } from './shared/services/http-cache-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,11 @@ import { HttpLoadingInterceptor } from './shared/services/http-loading-intercept
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpLoadingInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCacheInterceptor,
       multi: true
     }
   ],
