@@ -102,14 +102,18 @@ $app-theme: mat.define-light-theme((
   --icon-color-info: #3DCCDE;
 }
 
-html, body {
-  height: 100%;
-  background: var(--background-color);
-}
-
 @font-face {
   font-family: Nunito;
   src: url('assets/font/Nunito-Regular.ttf') format('truetype');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--background-color);
 }
 
 body {

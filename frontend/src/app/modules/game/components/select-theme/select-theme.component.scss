@@ -1,0 +1,55 @@
+.main-container {
+  padding: 3%;
+  display: grid;
+  grid-gap: .6rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.theme-card {
+  background: var(--button-color-primary);
+  text-align: center;
+  color: var(--button-color-secondary);
+  cursor: pointer;
+}
+
+mat-card img {
+  object-fit: contain;
+  height: 80px;
+}
+
+.center {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.placeholder {
+  box-shadow: 0 4px 10px 0 rgba(33, 33, 33, 0.15);
+  overflow: hidden;
+  height: 150px;
+  padding: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -150px;
+    top: 0;
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(to right, transparent 0%, #20475f 50%, transparent 100%);
+    animation: load 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+  }
+}
+
+@keyframes load {
+  from {
+    left: -150px;
+  }
+  to {
+    left: 100%;
+  }
+}

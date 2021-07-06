@@ -1,0 +1,17 @@
+<div class="main-container">
+
+    <mat-card class="theme-card" *ngFor="let theme of themes | async" (click)="onSelect(theme)">
+        <mat-card-title class="card-title">
+            {{theme.name}}
+        </mat-card-title>
+        <img mat-card-image alt="Image du thème"
+             [src]="theme.image ?
+                 IMAGE_SRC + theme.image :
+                 'assets/favicon/apple-touch-icon.png'"
+        >
+    </mat-card>
+
+    <ng-container *ngIf="isLoading$ | async">
+        <mat-card class="theme-card placeholder" *ngFor="let _ of createArrayForPlaceholder(4)"></mat-card>
+    </ng-container>
+</div>

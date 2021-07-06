@@ -1,0 +1,4 @@
+<div class="main-container">
+    <app-select-theme *ngIf="!selectedTheme" (selectedTheme)="onSelectTheme($event)"></app-select-theme>
+    <app-play-card *ngIf="selectedTheme" [theme]="selectedTheme"></app-play-card>
+</div>

@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { HeaderService } from './header.service';
 import { Observable } from 'rxjs';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-header',
@@ -10,9 +11,12 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent {
 
-  constructor(private titleService: HeaderService) {}
+  isLoading$ = this.loader.isLoading$();
+
+  constructor(private titleService: HeaderService,
+              private loader: LoadingService) {}
 
   get title(): Observable<string> {
-    return this.titleService.title;
+    return this.titleService.titre$;
   }
 }
