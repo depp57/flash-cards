@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
+import { routeTransitions } from './shared/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [routeTransitions]
 })
 export class AppComponent implements OnInit {
 
   private readonly _title = 'Flashcards';
-
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -19,6 +20,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.setDynamicPageTitle();
+  }
+
+  prepareRouteTransition(outlet: RouterOutlet): boolean {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
   }
 
   private setDynamicPageTitle(): void {

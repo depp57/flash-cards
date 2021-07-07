@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CardsComponent } from './components/cards.component';
+import { RouterModule, Routes } from '@angular/router';
 
-// const routes: Routes = [
-//   {path: '', component: GameComponent}
-// ];
+const routes: Routes = [
+  {path: '', component: CardsComponent}
+];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CardsComponent
+  ],
   imports: [
     CommonModule,
-    // RouterModule.forChild(routes),
+    RouterModule.forChild(routes),
   ]
 })
 export class CardsModule {}
