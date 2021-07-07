@@ -12,20 +12,20 @@ import {
 const ROUTE_TRANSITION_TIME = 300;
 const TIMING_FUNCTION       = 'ease';
 
-export const swipeLeft = animation([
+const swipeLeft = animation([
   style({transform: 'translateX(-100%)'}),
   animate(`${ROUTE_TRANSITION_TIME}ms ${TIMING_FUNCTION}`, style({transform: 'translateX(0)'}))
 ]);
 
-export const swipeLeftOut = animation([
+const swipeLeftOut = animation([
   animate(`${ROUTE_TRANSITION_TIME}ms ${TIMING_FUNCTION}`, style({transform: 'translateX(-100%)'}))
 ]);
 
-export const swipeRightOut = animation([
+const swipeRightOut = animation([
   animate(`${ROUTE_TRANSITION_TIME}ms ${TIMING_FUNCTION}`, style({transform: 'translateX(100%)'}))
 ]);
 
-export const swipeRight = animation([
+const swipeRight = animation([
   style({transform: 'translateX(100%)'}),
   animate(`${ROUTE_TRANSITION_TIME}ms ${TIMING_FUNCTION}`, style({transform: 'translateX(0)'}))
 ]);
