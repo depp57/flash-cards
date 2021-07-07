@@ -17,6 +17,6 @@ export class HeaderComponent {
               private loader: LoadingService) {}
 
   get title(): Observable<string> {
-    return this.titleService.titre$;
+    return this.titleService.title$;
   }
 }

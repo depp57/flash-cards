@@ -1,0 +1,26 @@
+.main-container {
+  padding: 3%;
+}
+
+.themes-table {
+  background: var(--button-color-primary);
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-size: 16px;
+}
+
+.mat-row {
+  cursor: pointer;
+}
+
+.btn-create-theme {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 100px;
+  height: auto;
+}

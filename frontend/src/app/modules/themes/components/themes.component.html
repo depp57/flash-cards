@@ -1,0 +1,26 @@
+<div class="main-container">
+
+    <div class="btn-create-theme">
+        <button mat-raised-button color="primary" (click)="addTheme()">
+            Nouveau thème
+        </button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="themes-table">
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nom</th>
+            <td mat-cell *matCellDef="let theme">{{theme.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef>Image</th>
+            <td mat-cell *matCellDef="let theme"><img *ngIf="theme.image" [src]="IMAGE_SRC + theme.image" alt="Image du thème"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row
+            (click)="onSelectTheme(row)"
+            *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>

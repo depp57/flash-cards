@@ -34,3 +34,19 @@ export interface ApiResult {
   readonly success: boolean;
   readonly cause: string | null;
 }
+
+export interface ApiImageResult {
+  readonly success: boolean;
+  readonly path: string | null;
+  readonly cause: string | null;
+}
+
+export interface ThemeCreation {
+  readonly theme_name?: string;
+  readonly theme_image?: File;
+}
+
+export interface ThemeModification {
+  readonly theme_name?: string;
+  readonly theme_image?: File;
+}

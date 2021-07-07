@@ -6,5 +6,5 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HeaderService {
 
-  public readonly titre$ = new BehaviorSubject<string>('Flashcards');
+  public readonly title$ = new BehaviorSubject<string>('Flashcards');
 }

@@ -1,0 +1,30 @@
+<div class="dialog-container">
+    <h2>{{theme.id !== -1 ? 'Modifier un thème' : 'Créer un thème'}}</h2>
+
+    <div class="dialog-content">
+        <label for="name">Nom du thème</label>
+        <textarea id="name" (input)="onEditName($event)">{{theme.name}}</textarea>
+
+        <div class="image-upload">
+            <label for="image-input">Image du thème
+                <img *ngIf="actualImage" id="image"
+                     [src]="actualImage" alt="Image du thème" width="480" height="480">
+            </label>
+
+            <input id="image-input" type="file" accept="image/png, image/jpeg" (change)="onImageSelected($event)">
+        </div>
+    </div>
+
+    <div class="actions-container">
+        <button mat-button color="warn" *ngIf="theme.id !== -1"
+                mat-dialog-close="delete">Supprimer
+        </button>
+        <button mat-button color="accent" style="color: var(--icon-color-success)"
+                [mat-dialog-close]="{id: theme.id, name: newName, image: imageSelected}">Valider
+        </button>
+        <button mat-button color="accent"
+                mat-dialog-close="">Annuler
+        </button>
+    </div>
+</div>
+

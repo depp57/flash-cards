@@ -12,7 +12,6 @@
   border-radius: 4px;
   position: relative;
   background: var(--button-color-primary);
-  color: var(--button-color-secondary);
   transition: transform 650ms ease-out;
   transform-style: preserve-3d;
 }
@@ -55,7 +54,6 @@
 
 .flip-card-button {
   margin-top: 10px;
-  color: var(--button-color-secondary);
   border: none;
   cursor: pointer;
   padding: 5px 10px;

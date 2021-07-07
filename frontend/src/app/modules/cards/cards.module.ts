@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // const routes: Routes = [
-//   {path: '', component: CardsComponent}
+//   {path: '', component: GameComponent}
 // ];
 
 @NgModule({
