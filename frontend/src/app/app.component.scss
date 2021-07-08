@@ -4,7 +4,7 @@
 
 .main-content {
   position: relative;
-  height: 84%;
+  height: 83.9%; // solve strange behavior on brave browser : vertical scrollbar appears
   overflow-y: auto;
   overflow-x: hidden;
 }
