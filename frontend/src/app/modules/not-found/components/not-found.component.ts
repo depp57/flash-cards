@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { HeaderService } from '../../../shared/components/header/header.service';
 
 @Component({
   selector: 'app-not-found',
@@ -6,11 +7,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./not-found.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotFoundComponent implements OnInit {
+export class NotFoundComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private header: HeaderService) {
+    this.header.title$.next('404');
   }
-
 }

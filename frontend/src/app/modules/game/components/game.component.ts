@@ -14,7 +14,6 @@ export class GameComponent {
 
   constructor(private header: HeaderService) {
     this.header.title$.next('Choix du thème');
-
   }
 
   onSelectTheme(theme: Theme) {
