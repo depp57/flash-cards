@@ -30,6 +30,16 @@
           "card"
         ],
         "summary": "List all cards",
+        "parameters": [
+          {
+            "name": "theme_name",
+            "in": "query",
+            "description": "Retrieve all card's theme name",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "All cards"

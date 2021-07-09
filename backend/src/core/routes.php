@@ -17,12 +17,20 @@ return function (App $app): void {
     $app->group('/cards', function (RouteCollectorProxy $group) {
 
         $group->get('', function (Request $request, Response $response) {
-            $cards = Card::with([
-                'question',
-                'question.answer'
-            ])->get()->toJson();
+            $queryParams = $request->getQueryParams();
+            $with = ['question', 'question.answer'];
+            if ($queryParams['theme_name']) {
+                array_push($with, 'theme');
+            }
 
-            return sendOK($response, $cards);
+            $cards = Card::with($with)->get();
+
+            if ($queryParams['theme_name']) {
+                // we already have the theme id in 'theme' field
+                $cards->makeHidden(['theme_id']);
+            }
+
+            return sendOK($response, $cards->toJson());
         });
 
         $group->get('/{theme_id}', function (Request $request, Response $response, array $args) {
@@ -35,9 +43,7 @@ return function (App $app): void {
             // we already have the theme id in the request param
             $cards->makeHidden(['theme_id']);
 
-            $cards->toJson();
-
-            return sendOK($response, $cards);
+            return sendOK($response, $cards->toJson());
         });
 
         $group->get('/{theme_id}/{count}', function (Request $request, Response $response, array $args) {
@@ -52,9 +58,7 @@ return function (App $app): void {
             // we already have the theme id in the request param
             $cards->makeHidden(['theme_id']);
 
-            $cards->toJson();
-
-            return sendOK($response, $cards);
+            return sendOK($response, $cards->toJson());
         });
 
         $group->post('', function (Request $request, Response $response) {
