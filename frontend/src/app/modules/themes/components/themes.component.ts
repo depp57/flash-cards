@@ -45,11 +45,11 @@ export class ThemesComponent {
 
     dialogRef.afterClosed().subscribe(
       result => {
-        if (result.id) {
+        if (result && result.id) {
           this.repository.createTheme({theme_name: result.name, theme_image: result.image}).subscribe(
             created => {
               if (created.success) {
-                this.dataSource.addTheme({id: -1, name: result.name, image: null})
+                this.dataSource.addTheme({id: -1, name: result.name, image: null});
               }
               else {
                 alert(created.cause);
@@ -61,7 +61,7 @@ export class ThemesComponent {
     );
   }
 
-  onSelectTheme(theme: Theme) {
+  onModifyTheme(theme: Theme) {
     const dialogRef = this.dialog.open(DialogEditThemeComponent, {
       data: theme,
       width: 'min(80%, 600px)',

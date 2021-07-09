@@ -10,6 +10,10 @@ export interface Card {
   readonly question: Question;
 }
 
+export interface CardWithTheme extends Card {
+  readonly theme: Theme;
+}
+
 export interface Question {
   readonly text: string | null;
   readonly image: string | null;
@@ -21,15 +25,6 @@ export interface Answer {
   readonly image: string | null;
 }
 
-export interface CardModification {
-  readonly card_theme?: number;
-  readonly card_score?: number;
-  readonly question_text?: string;
-  readonly question_image?: string;
-  readonly answer_text?: string;
-  readonly answer_image?: string;
-}
-
 export interface ApiResult {
   readonly success: boolean;
   readonly cause: string | null;
@@ -39,14 +34,4 @@ export interface ApiImageResult {
   readonly success: boolean;
   readonly path: string | null;
   readonly cause: string | null;
-}
-
-export interface ThemeCreation {
-  readonly theme_name?: string;
-  readonly theme_image?: File;
-}
-
-export interface ThemeModification {
-  readonly theme_name?: string;
-  readonly theme_image?: File;
 }

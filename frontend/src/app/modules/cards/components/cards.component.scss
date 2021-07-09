@@ -1,0 +1,27 @@
+.main-container {
+  padding: 3%;
+}
+
+.cards-table {
+  background: var(--button-color-primary);
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-size: 16px;
+}
+
+.mat-row {
+  cursor: pointer;
+}
+
+.menu-header-table {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 100px;
+  height: auto;
+}

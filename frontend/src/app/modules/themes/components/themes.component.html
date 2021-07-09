@@ -20,7 +20,7 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row
-            (click)="onSelectTheme(row)"
+            (click)="onModifyTheme(row)"
             *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 </div>

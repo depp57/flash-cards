@@ -1,0 +1,56 @@
+<div class="dialog-container">
+    <h2>{{card ? 'Modifier une carte' : 'Créer une carte'}}</h2>
+
+    <div class="dialog-content">
+        <select (change)="onSelectTheme($event)">
+            <option *ngFor="let theme of themes | async" [value]="theme.id">{{theme.name}}</option>
+        </select>
+
+        <label for="question">Question</label>
+        <textarea id="question" (input)="onEditText($event, true)">{{card?.question?.text}}</textarea>
+
+        <div class="image-upload">
+            <label for="image-question">Image de la question
+                <img *ngIf="questionImage"
+                     [src]="questionImage" alt="Image de la question" width="480" height="480">
+            </label>
+
+            <input id="image-question" type="file" accept="image/png, image/jpeg"
+                   (change)="onImageSelected($event, true)">
+        </div>
+
+        <br>
+
+        <label for="answer">Réponse</label>
+        <textarea id="answer" (input)="onEditText($event, false)">{{card?.question?.answer?.text}}</textarea>
+
+        <div class="image-upload">
+            <label for="image-answer">Image de la réponse
+                <img *ngIf="answerImage"
+                     [src]="answerImage" alt="Image de la réponse" width="480" height="480">
+            </label>
+
+            <input id="image-answer" type="file" accept="image/png, image/jpeg"
+                   (change)="onImageSelected($event, false)">
+        </div>
+
+    </div>
+
+    <div class="actions-container">
+        <button mat-button color="warn" *ngIf="card"
+                mat-dialog-close="delete">Supprimer
+        </button>
+        <button mat-button color="accent" style="color: var(--icon-color-success)"
+                [mat-dialog-close]="{
+                    card_theme: selectedThemeId,
+                    question_text: questionText,
+                    question_image: questionImageFile,
+                    answer_text: answerText,
+                    answer_image: answerImageFile
+                }">Valider
+        </button>
+        <button mat-button color="accent"
+                mat-dialog-close="">Annuler
+        </button>
+    </div>
+</div>

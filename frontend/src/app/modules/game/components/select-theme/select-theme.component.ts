@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
-import { CardsRepositoryService } from '../../services/cards-repository.service';
+import { GameRepositoryService } from '../../services/game-repository.service';
 import { Theme } from '../../../../shared/models/api-response';
 import { LoadingService } from '../../../../shared/services/loading.service';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ export class SelectThemeComponent implements OnInit {
   themes!: Observable<Theme[]>;
   readonly IMAGE_SRC = API_IMAGE_SRC;
 
-  constructor(private repository: CardsRepositoryService,
+  constructor(private repository: GameRepositoryService,
               private loader: LoadingService) {}
 
   ngOnInit(): void {

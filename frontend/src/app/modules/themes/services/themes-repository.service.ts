@@ -4,12 +4,11 @@ import { Observable } from 'rxjs';
 import {
   ApiImageResult,
   ApiResult,
-  ThemeModification,
-  Theme,
-  ThemeCreation
+  Theme
 } from '../../../shared/models/api-response';
 import { API_ENDPOINT } from '../../../shared/constants';
 import { mergeMap } from 'rxjs/operators';
+import { CreateTheme, ModifyTheme } from '../../../shared/models/api-request';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class ThemesRepositoryService {
     return this.http.get<Theme[]>(API_ENDPOINT + 'themes');
   }
 
-  createTheme(newTheme: ThemeCreation): Observable<ApiResult> {
+  createTheme(newTheme: CreateTheme): Observable<ApiResult> {
     if (newTheme.theme_image) {
       return this.uploadImage(newTheme.theme_image).pipe(
         mergeMap(uploaded => {
@@ -42,7 +41,7 @@ export class ThemesRepositoryService {
     return this.http.delete<ApiResult>(API_ENDPOINT + 'themes/' + theme.id);
   }
 
-  modifyTheme(theme: Theme, modification: ThemeModification): Observable<ApiResult> {
+  modifyTheme(theme: Theme, modification: ModifyTheme): Observable<ApiResult> {
     if (modification.theme_image) {
       return this.uploadImage(modification.theme_image).pipe(
         mergeMap(uploaded => {
@@ -58,7 +57,7 @@ export class ThemesRepositoryService {
     return this.http.post<ApiResult>(API_ENDPOINT + 'themes/' + theme.id, {theme_name: modification.theme_name});
   }
 
-  uploadImage(image: File): Observable<ApiImageResult> {
+  private uploadImage(image: File): Observable<ApiImageResult> {
     const formData = new FormData();
     formData.append('image', image, image.name);
 

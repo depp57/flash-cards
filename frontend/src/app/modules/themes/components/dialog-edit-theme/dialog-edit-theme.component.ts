@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Theme } from '../../../../shared/models/api-response';
 import { API_IMAGE_SRC } from '../../../../shared/constants';
@@ -6,8 +6,7 @@ import { API_IMAGE_SRC } from '../../../../shared/constants';
 @Component({
   selector: 'app-dialog-edit-theme',
   templateUrl: './dialog-edit-theme.component.html',
-  styleUrls: ['./dialog-edit-theme.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  styleUrls: ['./dialog-edit-theme.component.scss']
 })
 export class DialogEditThemeComponent {
 

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResult, Card, CardModification, Theme } from '../../../shared/models/api-response';
+import { ApiResult, Card, Theme } from '../../../shared/models/api-response';
 import { API_ENDPOINT } from '../../../shared/constants';
+import { ModifyCard } from '../../../shared/models/api-request';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CardsRepositoryService {
+export class GameRepositoryService {
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +20,7 @@ export class CardsRepositoryService {
     return this.http.get<Card[]>(`${API_ENDPOINT}cards/${theme.id}/${count}`);
   }
   
-  modifyCard(card: Card, modification: CardModification): Observable<ApiResult> {
+  modifyCard(card: Card, modification: ModifyCard): Observable<ApiResult> {
     return this.http.post<ApiResult>(`${API_ENDPOINT}cards/${card.id}`, modification);
   }
 }

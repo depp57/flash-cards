@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Card, Theme } from '../../../../shared/models/api-response';
 import { BehaviorSubject } from 'rxjs';
-import { CardsRepositoryService } from '../../services/cards-repository.service';
+import { GameRepositoryService } from '../../services/game-repository.service';
 import {
   API_IMAGE_SRC,
   CARDS_PER_REQUEST,
@@ -24,7 +24,7 @@ export class PlayCardComponent implements OnInit {
 
   readonly API_IMAGE_SRC = API_IMAGE_SRC;
 
-  constructor(private repository: CardsRepositoryService) {}
+  constructor(private repository: GameRepositoryService) {}
 
   ngOnInit(): void {
     // https://stackoverflow.com/questions/35042929/is-it-necessary-to-unsubscribe-from-observables-created-by-http-methods
